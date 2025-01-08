@@ -1,0 +1,26 @@
+﻿FormatVersion: 7
+Name: "Background 1"
+Script: "Background"
+Multithreaded: No
+Config:
+  RandomSeed:
+    Type: "System.Int32"
+    Value: "0"
+    DisplayName: "Random Seed"
+    BeginsGroup: "Common"
+Layers:
+  5228bf40d1324cd1a84c56d7c7e759b3:
+    Name: "Remove BG"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  b1bfbab1fcab45d8b0ab4d284da27312:
+    Name: "BG Layer"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  58665bbd8cb64613a6fa701490643940:
+    Name: "Building Layer"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes

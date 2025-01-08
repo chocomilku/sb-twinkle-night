@@ -1,0 +1,16 @@
+﻿FormatVersion: 7
+Name: "LyricBubbles 1"
+Script: "LyricBubbles"
+Multithreaded: No
+Config:
+  RandomSeed:
+    Type: "System.Int32"
+    Value: "0"
+    DisplayName: "Random Seed"
+    BeginsGroup: "Common"
+Layers:
+  94ca706e15fe4ea88d84d6254914ad38:
+    Name: "LRC Layer"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
