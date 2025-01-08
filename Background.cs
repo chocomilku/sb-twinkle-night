@@ -40,16 +40,16 @@ namespace StorybrewScripts
             // bg2: 55, 55, 55 88,88,88
             // bg3: 70, 70, 70 83, 83, 83
 
-            BuildingGenerator bg3Buidling = new(this, "sb/city loop bg3.png", buildingLayer, 435);
+            BuildingGenerator bg3Buidling = new(this, "sb/city/city loop bg3.png", buildingLayer, 435);
             bg3Buidling.LoopBuilding(884, (int)BeatDuration * 256, 224333);
 
-            BuildingGenerator bg2Buidling = new(this, "sb/city loop bg2.png", buildingLayer, 460);
+            BuildingGenerator bg2Buidling = new(this, "sb/city/city loop bg2.png", buildingLayer, 460);
             bg2Buidling.LoopBuilding(884, (int)BeatDuration * 128, 224333);
 
-            BuildingGenerator bg1Buidling = new(this, "sb/city loop bg1.png", buildingLayer, 485);
+            BuildingGenerator bg1Buidling = new(this, "sb/city/city loop bg1.png", buildingLayer, 485);
             bg1Buidling.LoopBuilding(884, (int)BeatDuration * 64, 224333);
 
-            BuildingGenerator fgBuidling = new(this, "sb/city loop.png", buildingLayer, 510);
+            BuildingGenerator fgBuidling = new(this, "sb/city/city loop.png", buildingLayer, 510);
             fgBuidling.LoopBuilding(884, (int)BeatDuration * 16, 224333);
 
 
