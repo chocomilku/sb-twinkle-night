@@ -35,8 +35,9 @@ namespace StorybrewScripts
                 );
 
             // Chat
+            ChatController.ChatGap = 57;
 
-            ChatController osuChat = new ChatController(this, layer, fontSmall, new Vector2(565, 360), new Vector2(75, 360));
+            ChatController osuChat = new ChatController(this, layer, fontSmall, new Vector2(565, 330), new Vector2(75, 330));
 
             // somunia - hook
             osuChat.InsertLine(3126, "somunia", "lrc0-01", OsbOrigin.CentreRight, new Vector2(-26, 0));
@@ -81,8 +82,40 @@ namespace StorybrewScripts
             osuChat.InsertLine(88298, "somunia", "lrc0-08", OsbOrigin.CentreRight, new Vector2(-35, 11));
 
             // yaca - verse2
+            osuChat.InsertLine(91919, "yaca", "lrc2-01", OsbOrigin.CentreLeft, new Vector2(-14, 0));
+            osuChat.InsertLine(93988, "yaca", "lrc2-02", OsbOrigin.CentreLeft, new Vector2(-25, 0));
+            osuChat.InsertLine(96747, "yaca", "lrc2-03", OsbOrigin.CentreLeft, new Vector2(-25, 0));
+            osuChat.InsertLine(100022, "yaca", "lrc2-04", OsbOrigin.CentreLeft, new Vector2(-47, 0));
+            osuChat.InsertLine(103471, "yaca", "lrc2-05", OsbOrigin.CentreLeft, new Vector2(-38, 0));
+            osuChat.InsertLine(106402, "yaca", "lrc2-06", OsbOrigin.CentreLeft, new Vector2(-6, 0));
+            osuChat.InsertLine(109160, "yaca", "lrc2-07", OsbOrigin.CentreLeft, new Vector2(-34, 0));
+            osuChat.InsertLine(111919, "yaca", "lrc2-08", OsbOrigin.CentreLeft, new Vector2(-26, 0));
+            osuChat.InsertLine(113988, "yaca", "lrc2-09", OsbOrigin.CentreLeft, new Vector2(-54, 0));
+            osuChat.InsertLine(118816, "yaca", "lrc2-10", OsbOrigin.CentreLeft, new Vector2(-0, 0));
+            osuChat.InsertLine(121402, "yaca", "lrc2-11", OsbOrigin.CentreLeft, new Vector2(46, 0));
+            osuChat.InsertLine(122609, "yaca", "lrc2-12", OsbOrigin.CentreLeft, new Vector2(+7, 0));
+            osuChat.InsertLine(125022, "yaca", "lrc2-13", OsbOrigin.CentreLeft, new Vector2(+3, 0));
+            osuChat.InsertLine(127436, "yaca", "lrc2-14", OsbOrigin.CentreLeft, new Vector2(-6, 0));
+            osuChat.InsertLine(130195, "yaca", "lrc2-15", OsbOrigin.CentreLeft, new Vector2(-54, 0));
+            osuChat.InsertLine(135367, "yaca", "lrc2-16", OsbOrigin.CentreLeft, new Vector2(+42, 0));
 
             // somunia - verse 3
+            osuChat.InsertLine(136402, "somunia", "lrc3-01", OsbOrigin.CentreRight, new Vector2(-44, 0));
+            osuChat.InsertLine(138471, "somunia", "lrc3-02", OsbOrigin.CentreRight, new Vector2(-24, 0));
+            osuChat.InsertLine(141229, "somunia", "lrc3-03", OsbOrigin.CentreRight, new Vector2(-52, 0));
+            osuChat.InsertLine(142609, "somunia", "lrc3-04", OsbOrigin.CentreRight, new Vector2(-45, 0));
+            osuChat.InsertLine(144678, "somunia", "lrc3-05", OsbOrigin.CentreRight, new Vector2(-15, 0));
+            osuChat.InsertLine(147436, "somunia", "lrc3-06", OsbOrigin.CentreRight, new Vector2(-35, 0));
+            osuChat.InsertLine(150195, "somunia", "lrc3-07", OsbOrigin.CentreRight, new Vector2(-34, 0));
+            osuChat.InsertLine(152091, "somunia", "lrc3-08", OsbOrigin.CentreRight, new Vector2(-45, 0));
+            osuChat.InsertLine(154160, "somunia", "lrc3-09", OsbOrigin.CentreRight, new Vector2(-16, 0));
+            osuChat.InsertLine(157609, "somunia", "lrc3-10", OsbOrigin.CentreRight, new Vector2(-12, 0));
+            osuChat.InsertLine(161229, "somunia", "lrc3-11", OsbOrigin.CentreRight, new Vector2(11, 0));
+            osuChat.InsertLine(165712, "somunia", "lrc3-12", OsbOrigin.CentreRight, new Vector2(-21, 0));
+            osuChat.InsertLine(169160, "somunia", "lrc3-13", OsbOrigin.CentreRight, new Vector2(-34, 0));
+            osuChat.InsertLine(171919, "somunia", "lrc3-14", OsbOrigin.CentreRight, new Vector2(-34, 0));
+            osuChat.InsertLine(174333, "somunia", "lrc3-15", OsbOrigin.CentreRight, new Vector2(-45, 0));
+            osuChat.InsertLine(176574, "somunia", "lrc3-16", OsbOrigin.CentreRight, new Vector2(-28, 0));
 
             // somunia - hook
             osuChat.InsertLine(179678, "somunia", "lrc0-01", OsbOrigin.CentreRight, new Vector2(-26, 0));
@@ -90,7 +123,9 @@ namespace StorybrewScripts
 
             // nyankobrq - hook
             osuChat.InsertLine(184850, "nyankobrq", "lrc0-03L", OsbOrigin.CentreLeft, new Vector2(+26, 11));
-            osuChat.InsertLine(188471, "nyankobrq", "lrc0-04", OsbOrigin.CentreLeft, new Vector2(+24, 0));
+
+            // chocomilku- - hook
+            osuChat.InsertLine(188471, "chocomilku-", "lrc0-04", OsbOrigin.CentreRight, new Vector2(-46, 0));
 
             // somunia - hook
             osuChat.InsertLine(190712, "somunia", "lrc0-01", OsbOrigin.CentreRight, new Vector2(-26, 0));
@@ -99,7 +134,9 @@ namespace StorybrewScripts
             // yaca - hook
             osuChat.InsertLine(195884, "yaca", "lrc0-06", OsbOrigin.CentreLeft, new Vector2(+10, 0));
             osuChat.InsertLine(197264, "yaca", "lrc0-07", OsbOrigin.CentreLeft, new Vector2(+4, 0));
-            osuChat.InsertLine(198643, "yaca", "lrc0-08L", OsbOrigin.CentreLeft, new Vector2(-2, 11));
+
+            // Chrisse - hook
+            osuChat.InsertLine(198643, "Chrisse", "lrc0-08L", OsbOrigin.CentreLeft, new Vector2(24, 11));
 
             // somunia - hook
             osuChat.InsertLine(201747, "somunia", "lrc0-01", OsbOrigin.CentreRight, new Vector2(-26, 0));
@@ -130,6 +167,7 @@ namespace StorybrewScripts
             private readonly StoryboardLayer layer = layer;
             private readonly OsbEasing easing = OsbEasing.OutCirc;
             private readonly List<Chat> visibleChats = [];
+            public static float ChatGap = 60;
 
             public void InsertLine(int time, string profileName, string lrcFileName, OsbOrigin origin, Vector2 profileOffset)
             {
@@ -145,7 +183,7 @@ namespace StorybrewScripts
                 visibleChats.Add(insertedChat);
                 foreach (Chat chat in visibleChats)
                 {
-                    chat.MoveY(time, 0.5f, 60, easing);
+                    chat.MoveY(time, 0.5f, ChatGap, easing);
                 }
 
                 RemoveOutsideRangeChat(time, 0);
