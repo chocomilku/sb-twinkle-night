@@ -21,10 +21,11 @@ namespace StorybrewScripts
             BeatDuration = Beatmap.TimingPoints.First().BeatDuration;
 
             // Chat
-            Chat lrc0_01 = new Chat(this, $"{ConvertMsToTimeFormat(3126)} -- somunia", "sb/pfp/somunia.jpg", "sb/lrc/lrc0-01.png", layer, OsbOrigin.CentreRight, new Vector2(485, 200));
+            Chat lrc0_01 = new Chat(this, $"{ConvertMsToTimeFormat(3126)} -- yaca", "sb/pfp/somunia.jpg", "sb/lrc/lrc0-01.png", layer, OsbOrigin.CentreLeft, new Vector2(485, 200), -12);
             lrc0_01.Fade(3126, 0.5f, 1);
             lrc0_01.Fade(14678, 0);
 
+            // TODO: implement movement stuff
 
         }
 
@@ -40,9 +41,9 @@ namespace StorybrewScripts
             protected FontGenerator fontSmall;
             private readonly OsbSprite pfp;
             private readonly OsbSprite messageImg;
-            private readonly OsbSprite profile;
+            private readonly List<OsbSprite> profileS;
             private readonly List<OsbSprite> sprites = [];
-            public Chat(StoryboardObjectGenerator ctx, string profileName, string profilePath, string messageImgPath, StoryboardLayer layer, OsbOrigin origin, Vector2 spawnPos)
+            public Chat(StoryboardObjectGenerator ctx, string profileName, string profilePath, string messageImgPath, StoryboardLayer layer, OsbOrigin origin, Vector2 spawnPos, float profilePosXOffset)
             {
                 this.ctx = ctx;
                 if (origin != OsbOrigin.CentreLeft && origin != OsbOrigin.CentreRight) throw new NotSupportedException("Only CentreLeft and CentreRight origins are supported.");
@@ -61,7 +62,6 @@ namespace StorybrewScripts
                 }
                 );
 
-
                 // message
                 messageImg = layer.CreateSprite(messageImgPath, origin, spawnPos);
                 messageImg.Scale(0, 480.0f / this.ctx.GetMapsetBitmap(messageImg.TexturePath).Height * 0.075);
@@ -76,13 +76,15 @@ namespace StorybrewScripts
                 pfp.Scale(0, 854.0 / this.ctx.GetMapsetBitmap(pfp.TexturePath).Width * 0.04);
                 pfp.Fade(0, 0);
 
+                var (lrcSize, offsets) = CalculateFontBaseWidth(fontSmall, profileName, origin);
+                int d = origin == OsbOrigin.CentreLeft ? -1 : +1;
+
                 // profile text
-                Vector2 textOffset = new(this.ctx.GetMapsetBitmap(pfp.TexturePath).Width * -0.05f, this.ctx.GetMapsetBitmap(messageImg.TexturePath).Height / 5);
+                Vector2 textOffset = new(this.ctx.GetMapsetBitmap(messageImg.TexturePath).Width, this.ctx.GetMapsetBitmap(messageImg.TexturePath).Height / 5);
 
-                profile = LyricLineSpriteFactoryHorizontal(layer, fontSmall, profileName, origin, new Vector2(spawnPos.X + textOffset.X, spawnPos.Y - textOffset.Y))[0];
-                profile.Fade(0, 0);
+                profileS = LyricSpritesFactoryHorizontal(layer, fontSmall, profileName, origin, new Vector2(spawnPos.X - (textOffset.X / (float)(Math.Floor((lrcSize.X + offsets.First()) / 10) - 1) * d) + profilePosXOffset, spawnPos.Y - textOffset.Y));
 
-                sprites = [pfp, messageImg, profile];
+                sprites = [pfp, messageImg, .. profileS];
             }
 
             protected static List<OsbSprite> LyricLineSpriteFactoryHorizontal(StoryboardLayer layer, FontGenerator font, string lyric, OsbOrigin origin, Vector2 pos)
@@ -99,9 +101,67 @@ namespace StorybrewScripts
                 return [sprite];
             }
 
-            public (OsbSprite pfp, OsbSprite messageImg, OsbSprite profile) GetSprites()
+            protected static (Vector2, List<float>) CalculateFontBaseWidth(FontGenerator font, string lyric, OsbOrigin origin)
             {
-                return (pfp, messageImg, profile);
+                float fontScale = 0.5f;
+
+                float lineWidth = 0f;
+                float lineHeight = 0f;
+                List<float> offset = [];
+
+                foreach (char letter in lyric)
+                {
+                    FontTexture texture = font.GetTexture(letter.ToString());
+
+                    lineWidth += texture.BaseWidth * fontScale;
+                    lineHeight = Math.Max(lineHeight, texture.BaseHeight * fontScale);
+                    offset.Add(texture.OffsetFor(origin).X);
+                }
+
+                return (new Vector2(lineWidth, lineHeight), offset);
+            }
+
+            protected static List<OsbSprite> LyricSpritesFactoryHorizontal(StoryboardLayer layer, FontGenerator font, string lyric, OsbOrigin origin, Vector2 pos)
+            {
+                float letterX = pos.X;
+                float letterY = pos.Y;
+                float fontScale = 0.5f;
+
+                float lineWidth = 0f;
+                float lineHeight = 0f;
+
+                foreach (char letter in lyric)
+                {
+                    FontTexture texture = font.GetTexture(letter.ToString());
+
+                    lineWidth += texture.BaseWidth * fontScale;
+                    lineHeight = Math.Max(lineHeight, texture.BaseHeight * fontScale);
+                }
+
+                List<OsbSprite> sprites = [];
+
+                foreach (char letter in lyric)
+                {
+                    FontTexture texture = font.GetTexture(letter.ToString());
+
+                    if (!texture.IsEmpty)
+                    {
+                        // Vector2 position = new Vector2(letterX, letterY) + texture.OffsetFor(OsbOrigin.Centre) * fontScale;
+                        Vector2 position = new(letterX - texture.BaseWidth / 4 + texture.OffsetFor(origin).X - lineWidth * fontScale, letterY);
+
+                        OsbSprite sprite = layer.CreateSprite(texture.Path, origin, position);
+                        sprite.Scale(0, fontScale);
+
+                        sprites.Add(sprite);
+                    }
+                    letterX += texture.BaseWidth * fontScale;
+                }
+                return sprites;
+            }
+
+            public List<OsbSprite> GetSprites()
+            {
+                return sprites;
             }
 
             public void Fade(int time, double opacity) { foreach (OsbSprite sprite in sprites) { sprite.Fade(time, opacity); } }
@@ -119,17 +179,6 @@ namespace StorybrewScripts
                 {
                     sprite.Fade(time - duration, time, sprite.OpacityAt(time - duration), opacity);
                 }
-            }
-
-            /// <summary>
-            /// Apparently, the abstracted generate per line generation has been using center as default therefore line generation will tend to be strictly center only.
-            /// This method will do a MoveX command to put the text in the right place especially for CentreLeft origin
-            /// </summary>
-            /// <param name="time">start time of the sprite</param>
-            /// <param name="relativePosX">added osu pixels relative to its initial position upon generation</param>
-            public void ProfilePosXOverride(int time, int relativePosX)
-            {
-                profile.MoveX(time, profile.PositionAt(time).X + relativePosX);
             }
         }
     }
