@@ -19,8 +19,23 @@ Layers:
     OsbLayer: Background
     DiffSpecific: No
     Visible: Yes
-  58665bbd8cb64613a6fa701490643940:
-    Name: "Building Layer"
+  e882e09e01734e5ebf45097415b00aa8:
+    Name: "Building Layer BG3"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  c0eb5d3ac117457eae28e44f407fd4ec:
+    Name: "Building Layer BG2"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  e3018f87a9074c89850e7ea30958e219:
+    Name: "Building Layer BG1"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  4bdc19b7321b40138d494e6399a367d1:
+    Name: "Building Layer FG"
     OsbLayer: Background
     DiffSpecific: No
     Visible: Yes

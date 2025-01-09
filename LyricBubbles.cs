@@ -36,7 +36,7 @@ namespace StorybrewScripts
 
             // Chat
 
-            ChatController osuChat = new ChatController(this, layer, fontSmall, new Vector2(485, 260), new Vector2(90, 260));
+            ChatController osuChat = new ChatController(this, layer, fontSmall, new Vector2(565, 360), new Vector2(75, 360));
 
             // somunia - hook
             osuChat.InsertLine(3126, "somunia", "lrc0-01", OsbOrigin.CentreRight, new Vector2(-26, 0));
