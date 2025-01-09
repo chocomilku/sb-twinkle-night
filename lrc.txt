@@ -197,6 +197,25 @@ lrc0-08l: 言葉と指を交わそうよ
 somunia
 lrc0
 
+chocomilku-
+lrcX-01: twinkle night (feat. somunia)
+lrcX-02: by nyankobrq & yaca
+
+Chrisse
+lrcX-03: BPM 174
+lrcX-04: GENRE Future Bass
+
+Mappers' Guild
+lrcX-05: Featured Artist #330
+lrcX-06: Priority Quest: Spread Coordinators
+
+chocomilku-
+lrcX-07: Mapped by chocomilku- & Chrisse
+		 Hitsounds and Storyboard by chocomilku-
+lrcX-08: Thanks for playing!
+
+Chrisse
+lrcX-08: Thanks for playing!
 
 
 

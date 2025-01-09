@@ -144,10 +144,29 @@ namespace StorybrewScripts
             osuChat.InsertLine(206919, "somunia", "lrc0-03", OsbOrigin.CentreRight, new Vector2(-21, 11));
             osuChat.InsertLine(210540, "somunia", "lrc0-04", OsbOrigin.CentreRight, new Vector2(-18, 0));
 
+            // chocomilku - outro
+            osuChat.InsertLine(213298, "chocomilku-", "lrcX-01", OsbOrigin.CentreRight, new Vector2(-46, 0));
+            osuChat.InsertLine(214678, "chocomilku-", "lrcX-02", OsbOrigin.CentreRight, new Vector2(-62, 0));
+
+            // Chrisse - outro
+            osuChat.InsertLine(216057, "Chrisse", "lrcX-03", OsbOrigin.CentreLeft, new Vector2(58, 0));
+            osuChat.InsertLine(217436, "Chrisse", "lrcX-04", OsbOrigin.CentreLeft, new Vector2(-2, 0));
+
+            // Mappers' Guild - outro
+            osuChat.InsertLine(218816, "Mappers' Guild", "lrcX-05", OsbOrigin.CentreLeft, new Vector2(75, 0));
+            osuChat.InsertLine(220195, "Mappers' Guild", "lrcX-06", OsbOrigin.CentreLeft, new Vector2(50, 0));
+
+            // chocomilku - outro
+            osuChat.InsertLine(221574, "chocomilku-", "lrcX-07", OsbOrigin.CentreRight, new Vector2(-24, 11));
+            osuChat.InsertLine(222781, "chocomilku-", "lrcX-08", OsbOrigin.CentreRight, new Vector2(-62, 0));
+
+            // Chrisse - outro
+            osuChat.InsertLine(222953, "Chrisse", "lrcX-08", OsbOrigin.CentreLeft, new Vector2(30, 0));
+
             List<Chat> chats = osuChat.GetVisibleChats();
             foreach (Chat chatt in chats)
             {
-                chatt.Fade(213298, 216057, 0);
+                chatt.Fade(223988, 224333, 0);
             }
         }
 
