@@ -22,7 +22,6 @@ namespace StorybrewScripts
             BeatDuration = Beatmap.TimingPoints.First().BeatDuration;
             GetLayer("Remove BG").CreateSprite(Beatmap.BackgroundPath).Fade(0, 0);
 
-
             // Layers
             StoryboardLayer bgLayer = GetLayer("BG Layer");
             StoryboardLayer buildingLayer = GetLayer("Building Layer FG");
@@ -32,10 +31,10 @@ namespace StorybrewScripts
 
             // Sprites
             OsbSprite BgBackground = bgLayer.CreateSprite("sb/p.png");
-            BgBackground.ScaleVec(0, 854, 480);
-            BgBackground.Color(0, new Color4(5, 45, 84, 255));
+            BgBackground.ScaleVec(884, 854, 480);
+            BgBackground.Color(884, new Color4(5, 45, 84, 255));
             BgBackground.Fade(884, 1);
-            BgBackground.Fade(AudioDuration, 0);
+            BgBackground.Fade(224333, 0);
 
             // Building Loop
             // fg: 0, 0, 0 255,255,255
@@ -44,16 +43,20 @@ namespace StorybrewScripts
             // bg3: 70, 70, 70 83, 83, 83
 
             BuildingGenerator bg3Buidling = new(this, "sb/city/city loop bg3.png", buildingLayer3, 435);
+            bg3Buidling.InitSprites(884);
             bg3Buidling.LoopBuilding(884, (int)BeatDuration * 256, 224333);
 
             BuildingGenerator bg2Buidling = new(this, "sb/city/city loop bg2.png", buildingLayer2, 460);
+            bg2Buidling.InitSprites(884);
             bg2Buidling.LoopBuilding(884, (int)BeatDuration * 128, 224333);
 
             BuildingGenerator bg1Buidling = new(this, "sb/city/city loop bg1.png", buildingLayer1, 485);
+            bg1Buidling.InitSprites(884);
             bg1Buidling.LoopBuilding(884, (int)BeatDuration * 64, 224333);
 
             BuildingGenerator fgBuidling = new(this, "sb/city/city loop.png", buildingLayer, 510);
-            fgBuidling.LoopBuilding(884, (int)BeatDuration * 16, 224333);
+            fgBuidling.InitSprites(884);
+            fgBuidling.LoopBuilding(884, (int)BeatDuration * 13, 224333);
 
 
         }
@@ -68,30 +71,32 @@ namespace StorybrewScripts
             {
                 float scale = 1.25f;
                 this.ctx = ctx;
-                this.startX = (int)(this.ctx.GetMapsetBitmap(path).Width / scale * 0.485);
+                startX = (int)(this.ctx.GetMapsetBitmap(path).Width / scale * 0.485);
 
                 sprite = layer.CreateSprite(path, OsbOrigin.BottomCentre, new Vector2(startX, yPos));
-                sprite.Scale(0, 854.0f / this.ctx.GetMapsetBitmap(sprite.TexturePath).Width * scale);
-                sprite.Fade(0, 0);
-
                 sprite2 = layer.CreateSprite(path, OsbOrigin.BottomCentre, new Vector2(startX, yPos));
-                sprite2.Scale(0, 854.0f / this.ctx.GetMapsetBitmap(sprite2.TexturePath).Width * scale);
-                sprite2.Fade(0, 0);
+            }
 
+            public void InitSprites(int time)
+            {
+                float scale = 1.25f;
+
+                sprite.Scale(time, 854.0f / ctx.GetMapsetBitmap(sprite.TexturePath).Width * scale);
+                sprite2.Scale(time, 854.0f / ctx.GetMapsetBitmap(sprite2.TexturePath).Width * scale);
+
+                sprite.Fade(time, 1);
+                sprite2.Fade(time, 1);
             }
 
             public void LoopBuilding(int startTime, int segmentLoopTime, int endTime)
             {
-                sprite.Fade(startTime, 1);
-                sprite2.Fade(startTime, 1);
-                // sprite.Fade(endTime, 0);
-                // sprite2.Fade(endTime, 0);
+                sprite.Fade(endTime, 0);
+                sprite2.Fade(endTime, 0);
 
                 int loopCount = endTime / segmentLoopTime;
                 int delay = segmentLoopTime / 2;
 
                 ctx.Log($"startTime: {startTime}, segmentLoopTime: {segmentLoopTime}, endTime: {endTime}, loopCount: {loopCount}, expected end time: {startTime + (segmentLoopTime * (loopCount + 1))}");
-
 
                 sprite2.MoveX(OsbEasing.None, startTime, startTime + delay, startX / 4, -startX / 2);
 
@@ -103,14 +108,12 @@ namespace StorybrewScripts
                 sprite2.MoveX(OsbEasing.None, 0, segmentLoopTime, startX, -startX / 2);
                 sprite2.EndGroup();
 
-
             }
 
             public (OsbSprite, OsbSprite) GetSprites()
             {
                 return (sprite, sprite2);
             }
-
         }
 
     }
