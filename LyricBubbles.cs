@@ -35,38 +35,13 @@ namespace StorybrewScripts
                 );
 
             // Chat
-            Chat lrc0_01 = new Chat(this, $"{ConvertMsToTimeFormat(3126)} -- somunia", "sb/pfp/somunia.jpg", "sb/lrc/lrc0-01.png", layer, fontSmall, OsbOrigin.CentreRight, new Vector2(485, 260), new Vector2(-26, 0));
-            lrc0_01.Fade(3126, 0.5f, 1);
-            lrc0_01.Fade(14678, 0);
-            lrc0_01.MoveY(3126, 0.5f, 60, OsbEasing.OutCirc);
-            lrc0_01.MoveY(5540, 0.5f, 60, OsbEasing.OutCirc);
-            lrc0_01.MoveY(8298, 0.5f, 60, OsbEasing.OutCirc);
-            lrc0_01.MoveY(11919, 0.5f, 60, OsbEasing.OutCirc);
 
-
-            Chat lrc0_02 = new Chat(this, $"{ConvertMsToTimeFormat(5540)} -- somunia", "sb/pfp/somunia.jpg", "sb/lrc/lrc0-02.png", layer, fontSmall, OsbOrigin.CentreLeft, new Vector2(125, 260), new Vector2(+30, 0));
-            lrc0_02.Fade(5540, 0.5f, 1);
-            lrc0_02.Fade(14678, 0);
-            lrc0_02.MoveY(5540, 0.5f, 60, OsbEasing.OutCirc);
-            lrc0_02.MoveY(8298, 0.5f, 60, OsbEasing.OutCirc);
-            lrc0_02.MoveY(11919, 0.5f, 60, OsbEasing.OutCirc);
-
-
-            Chat lrc0_03 = new Chat(this, $"{ConvertMsToTimeFormat(8298)} -- somunia", "sb/pfp/somunia.jpg", "sb/lrc/lrc0-03.png", layer, fontSmall, OsbOrigin.CentreRight, new Vector2(485, 260), new Vector2(-26, 11));
-            lrc0_03.Fade(8298, 0.5f, 1);
-            lrc0_03.Fade(14678, 0);
-            lrc0_03.MoveY(8298, 0.5f, 60, OsbEasing.OutCirc);
-            lrc0_03.MoveY(11919, 0.5f, 60, OsbEasing.OutCirc);
-
-
-            Chat lrc0_04 = new Chat(this, $"{ConvertMsToTimeFormat(11919)} -- somunia", "sb/pfp/somunia.jpg", "sb/lrc/lrc0-04.png", layer, fontSmall, OsbOrigin.CentreLeft, new Vector2(125, 260), new Vector2(+0, 0));
-            lrc0_04.Fade(11919, 0.5f, 1);
-            lrc0_04.Fade(14678, 0);
-            lrc0_04.MoveY(11919, 0.5f, 60, OsbEasing.OutCirc);
-
-
-
-            // TODO: implement movement stuff
+            ChatController osuChat = new ChatController(this, layer, fontSmall, new Vector2(485, 260), new Vector2(125, 260));
+            osuChat.InsertLine(3126, "somunia", "lrc0-01", OsbOrigin.CentreRight, new Vector2(-26, 0));
+            osuChat.InsertLine(5540, "somunia", "lrc0-02", OsbOrigin.CentreRight, new Vector2(-40, 0));
+            osuChat.InsertLine(8298, "somunia", "lrc0-03", OsbOrigin.CentreRight, new Vector2(-21, 11));
+            osuChat.InsertLine(11919, "somunia", "lrc0-04", OsbOrigin.CentreRight, new Vector2(-18, 0));
+            osuChat.InsertLine(14160, "somunia", "lrc0-01", OsbOrigin.CentreRight, new Vector2(-26, 0));
 
         }
 
@@ -77,16 +52,54 @@ namespace StorybrewScripts
             return string.Format("{0:D2}:{1:D2}", time.Minutes, time.Seconds);
         }
 
-        class ChatController
+        class ChatController(StoryboardObjectGenerator ctx, StoryboardLayer layer, FontGenerator font, Vector2 spawnPosRight, Vector2 spawnPosLeft)
         {
-            private readonly Vector2 spawnPosRight;
-            private readonly Vector2 spawnPosLeft;
+            private readonly Vector2 spawnPosRight = spawnPosRight;
+            private readonly Vector2 spawnPosLeft = spawnPosLeft;
+            private readonly StoryboardObjectGenerator ctx = ctx;
+            private readonly double BeatDuration = ctx.Beatmap.TimingPoints.First().BeatDuration;
+            private readonly FontGenerator font = font;
+            private readonly StoryboardLayer layer = layer;
+            private readonly OsbEasing easing = OsbEasing.OutCirc;
             private readonly List<Chat> visibleChats = [];
-            public ChatController()
+
+            public void InsertLine(int time, string profileName, string lrcFileName, OsbOrigin origin, Vector2 profileOffset)
             {
 
+                Vector2 spawnPos = origin == OsbOrigin.CentreLeft ? spawnPosLeft : spawnPosRight;
+                Chat insertedChat = new(ctx, $"{ConvertMsToTimeFormat(time)} -- {profileName}", $"sb/pfp/{profileName}.jpg", $"sb/lrc/{lrcFileName}.png", layer, font, origin, spawnPos, profileOffset);
+                insertedChat.Fade(time - (int)(BeatDuration * 0.5f), time, 1);
+
+                visibleChats.Add(insertedChat);
+
+                foreach (Chat chat in visibleChats)
+                {
+                    chat.MoveY(time, 0.5f, 60, easing);
+                }
+
+                RemoveOutsideRangeChat(time, 0);
+
+            }
+
+            private void RemoveOutsideRangeChat(int time, float outPosY)
+            {
+                for (int i = visibleChats.Count - 1; i > -1; i--)
+                {
+                    if (visibleChats[i].GetPosition().Y <= outPosY)
+                    {
+                        visibleChats[i].Fade(time, 0);
+                        visibleChats.RemoveAt(i);
+                    }
+                }
+
+                ctx.Log($"{ConvertMsToTimeFormat(time)}: Removing chats outside range. Visible chats count: {visibleChats.Count}");
+                foreach (var chat in visibleChats)
+                {
+                    ctx.Log($"Visible chat filename: {chat.GetFileName()}, position: {chat.GetPosition()}");
+                }
             }
         }
+
         class Chat
         {
             private readonly StoryboardObjectGenerator ctx;
@@ -94,6 +107,7 @@ namespace StorybrewScripts
             private readonly OsbSprite messageImg;
             private readonly List<OsbSprite> profileS;
             private readonly List<OsbSprite> sprites = [];
+            private readonly string FileName;
             private Vector2 Position;
             public Chat(StoryboardObjectGenerator ctx, string profileName, string profilePath, string messageImgPath, StoryboardLayer layer, FontGenerator font, OsbOrigin origin, Vector2 spawnPos, Vector2 profilePosOffset)
             {
@@ -101,6 +115,7 @@ namespace StorybrewScripts
                 if (origin != OsbOrigin.CentreLeft && origin != OsbOrigin.CentreRight) throw new NotSupportedException("Only CentreLeft and CentreRight origins are supported.");
 
                 // message
+                FileName = messageImgPath;
                 messageImg = layer.CreateSprite(messageImgPath, origin, spawnPos);
                 messageImg.Scale(0, 480.0f / this.ctx.GetMapsetBitmap(messageImg.TexturePath).Height * 0.075);
 
@@ -215,6 +230,10 @@ namespace StorybrewScripts
                 return Position;
             }
 
+            public string GetFileName()
+            {
+                return FileName;
+            }
             public void Fade(int time, double opacity) { foreach (OsbSprite sprite in sprites) { sprite.Fade(time, opacity); } }
             public void Fade(int startTime, int endTime, double opacity)
             {
