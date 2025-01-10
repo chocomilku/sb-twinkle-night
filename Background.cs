@@ -42,7 +42,7 @@ namespace StorybrewScripts
             StarGenerator("sb/city/star.png", celestialLayer, 884, 224333, 5, 1, 1.5f);
 
             OsbSprite moon = celestialLayer.CreateSprite("sb/city/moon.png", OsbOrigin.Centre, new Vector2(75, 115));
-            moon.Fade(884, 0.6);
+            moon.Fade(884, 1);
             moon.Fade(224333, 0);
             moon.Scale(884, 854.0f / GetMapsetBitmap(moon.TexturePath).Width * 0.25);
             moon.MoveX(884, 224333, moon.PositionAt(884).X, 0);
@@ -56,15 +56,15 @@ namespace StorybrewScripts
 
             BuildingGenerator bg3Buidling = new(this, "sb/city/city loop bg3.png", buildingLayer3, 435);
             bg3Buidling.InitSprites(884);
-            bg3Buidling.LoopBuilding(884, (int)BeatDuration * 256, 224333);
+            bg3Buidling.LoopBuilding(884, (int)BeatDuration * 160, 224333);
 
             BuildingGenerator bg2Buidling = new(this, "sb/city/city loop bg2.png", buildingLayer2, 460);
             bg2Buidling.InitSprites(884);
-            bg2Buidling.LoopBuilding(884, (int)BeatDuration * 128, 224333);
+            bg2Buidling.LoopBuilding(884, (int)BeatDuration * 81, 224333);
 
             BuildingGenerator bg1Buidling = new(this, "sb/city/city loop bg1.png", buildingLayer1, 485);
             bg1Buidling.InitSprites(884);
-            bg1Buidling.LoopBuilding(884, (int)BeatDuration * 64, 224333);
+            bg1Buidling.LoopBuilding(884, (int)BeatDuration * 50, 224333);
 
             BuildingGenerator fgBuidling = new(this, "sb/city/city loop.png", buildingLayer, 510);
             fgBuidling.InitSprites(884);
@@ -97,8 +97,8 @@ namespace StorybrewScripts
             int timeDuration = endTime - startTime;
             for (int i = 0; i < amount; i++)
             {
-                float X = Random(140, 425);
-                float Y = Random(OsuHitObject.WidescreenStoryboardBounds.Top + OsuHitObject.PlayfieldToStoryboardOffset.Y, OsuHitObject.WidescreenStoryboardBounds.Bottom / 2);
+                float X = Random(180, 485);
+                float Y = Random(OsuHitObject.WidescreenStoryboardBounds.Top + OsuHitObject.PlayfieldToStoryboardOffset.Y, OsuHitObject.WidescreenStoryboardBounds.Bottom / 2.5f);
 
                 OsbSprite star = layer.CreateSprite(path, OsbOrigin.Centre, new Vector2(X, Y));
 
