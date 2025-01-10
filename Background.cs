@@ -36,6 +36,15 @@ namespace StorybrewScripts
             BgBackground.Fade(884, 1);
             BgBackground.Fade(224333, 0);
 
+            StarGenerator("sb/city/star.png", bgLayer, 884, 224333, 5, 1, 1.5f);
+
+            OsbSprite moon = bgLayer.CreateSprite("sb/city/moon.png", OsbOrigin.Centre, new Vector2(75, 115));
+            moon.Fade(884, 0.6);
+            moon.Fade(224333, 0);
+            moon.Scale(884, 854.0f / GetMapsetBitmap(moon.TexturePath).Width * 0.25);
+            moon.MoveX(884, 224333, moon.PositionAt(884).X, 0);
+            moon.Additive(884);
+
             // Building Loop
             // fg: 0, 0, 0 255,255,255
             // bg1: 37, 37, 37 132,132,132
@@ -58,7 +67,44 @@ namespace StorybrewScripts
             fgBuidling.InitSprites(884);
             fgBuidling.LoopBuilding(884, (int)BeatDuration * 13, 224333);
 
+        }
 
+        void StarGenerator(string path, StoryboardLayer layer, int startTime, int endTime, int amount, float initialScale, float maxScale)
+        {
+            int timeDuration = endTime - startTime;
+            for (int i = 0; i < amount; i++)
+            {
+                float X = Random(140, 425);
+                float Y = Random(OsuHitObject.WidescreenStoryboardBounds.Top + OsuHitObject.PlayfieldToStoryboardOffset.Y, OsuHitObject.WidescreenStoryboardBounds.Bottom / 2);
+
+                OsbSprite star = layer.CreateSprite(path, OsbOrigin.Centre, new Vector2(X, Y));
+
+                star.Fade(startTime, 0.9);
+                // star.Additive(startTime);
+                star.Fade(endTime, 0);
+
+                double scale = 854.0f / GetMapsetBitmap(star.TexturePath).Width * 0.05 * initialScale;
+                star.Scale(startTime, scale);
+                star.MoveX(startTime, endTime, star.PositionAt(startTime).X, star.PositionAt(startTime).X - 75);
+
+                int loopCount = Random(7, 27);
+                int loopDuration = timeDuration / loopCount;
+                int randomRotate = Random(-45, 45);
+
+                star.StartLoopGroup(startTime, loopCount);
+                star.Rotate(OsbEasing.InOutSine, 0, loopDuration / 4 * 1, MathHelper.DegreesToRadians(0), MathHelper.DegreesToRadians(randomRotate));
+                star.Rotate(OsbEasing.InOutSine, loopDuration / 4 * 1, loopDuration / 4 * 2, MathHelper.DegreesToRadians(randomRotate), MathHelper.DegreesToRadians(0));
+                star.Rotate(OsbEasing.InOutSine, loopDuration / 4 * 2, loopDuration / 4 * 3, MathHelper.DegreesToRadians(0), MathHelper.DegreesToRadians(-randomRotate));
+                star.Rotate(OsbEasing.InOutSine, loopDuration / 4 * 3, loopDuration / 4 * 4, MathHelper.DegreesToRadians(-randomRotate), MathHelper.DegreesToRadians(0));
+
+
+                star.Scale(OsbEasing.InExpo, loopDuration / 4 * 0, loopDuration / 4 * 1, scale, scale * maxScale);
+                star.Scale(OsbEasing.OutExpo, loopDuration / 4 * 1, loopDuration / 4 * 2, scale * maxScale, scale);
+
+                star.Scale(OsbEasing.InExpo, loopDuration / 4 * 2, loopDuration / 4 * 3, scale, scale * maxScale);
+                star.Scale(OsbEasing.OutExpo, loopDuration / 4 * 3, loopDuration / 4 * 4, scale * maxScale, scale);
+                star.EndGroup();
+            }
         }
         class BuildingGenerator()
         {
