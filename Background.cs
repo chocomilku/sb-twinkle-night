@@ -83,7 +83,7 @@ namespace StorybrewScripts
             BlankFlash flash = new BlankFlash(this, GetLayer("Blank Flash Layer"), "sb/p.png", new Color4(75, 148, 219, 255));
             flash.InitSprite(3643);
 
-            flash.FlashTrigger(884, 224333, "HitSoundNormalFinish", 8f);
+            flash.FlashTrigger(884, 224333, "HitSoundNormalFinish", 2f);
 
             // flash.Flash(3643, 8f);
             // flash.Flash(9160, 8f);
@@ -249,8 +249,8 @@ namespace StorybrewScripts
                 sprite.StartTriggerGroup(trigger, startTime, endTime);
                 int time = 0;
 
-                sprite.Fade(OsbEasing.In, time - ctx.Beatmap.TimingPoints.First().BeatDuration, time, 0, opacity);
-                sprite.Fade(OsbEasing.OutExpo, time, time + duration, opacity, 0);
+                sprite.Fade(OsbEasing.None, time - ctx.Beatmap.TimingPoints.First().BeatDuration, time, 0, opacity);
+                sprite.Fade(OsbEasing.None, time, time + duration, opacity, 0);
                 sprite.EndGroup();
             }
 
