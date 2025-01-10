@@ -5,7 +5,7 @@ Multithreaded: No
 Config:
   RandomSeed:
     Type: "System.Int32"
-    Value: "90219040"
+    Value: "4"
     DisplayName: "Random Seed"
     BeginsGroup: "Common"
 Layers:

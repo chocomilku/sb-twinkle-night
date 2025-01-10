@@ -39,7 +39,7 @@ namespace StorybrewScripts
             BgBackground.Fade(884, 1);
             BgBackground.Fade(224333, 0);
 
-            StarGenerator("sb/city/star.png", celestialLayer, 884, 224333, 5, 1, 1.5f);
+            StarGenerator("sb/city/star.png", celestialLayer, 884, 224333, 10, 1, 1.5f);
 
             OsbSprite moon = celestialLayer.CreateSprite("sb/city/moon.png", OsbOrigin.Centre, new Vector2(75, 115));
             moon.Fade(884, 1);
@@ -97,7 +97,7 @@ namespace StorybrewScripts
             int timeDuration = endTime - startTime;
             for (int i = 0; i < amount; i++)
             {
-                float X = Random(180, 485);
+                float X = Random(180, 700);
                 float Y = Random(OsuHitObject.WidescreenStoryboardBounds.Top + OsuHitObject.PlayfieldToStoryboardOffset.Y, OsuHitObject.WidescreenStoryboardBounds.Bottom / 2.5f);
 
                 OsbSprite star = layer.CreateSprite(path, OsbOrigin.Centre, new Vector2(X, Y));
