@@ -19,6 +19,16 @@ Layers:
     OsbLayer: Background
     DiffSpecific: No
     Visible: Yes
+  0d37036b44984904b5992e61e99c99fe:
+    Name: "Blank Flash Layer"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  bd614b0ae3454d4d86abf930c602cd09:
+    Name: "Celestial Bodies Layer"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
   e882e09e01734e5ebf45097415b00aa8:
     Name: "Building Layer BG3"
     OsbLayer: Background
@@ -37,5 +47,10 @@ Layers:
   4bdc19b7321b40138d494e6399a367d1:
     Name: "Building Layer FG"
     OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  ba5894fcb64b4e5f9db233ebd4f2b95b:
+    Name: "Blank Screen Layer"
+    OsbLayer: Foreground
     DiffSpecific: No
     Visible: Yes

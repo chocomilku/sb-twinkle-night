@@ -10,6 +10,7 @@ using StorybrewCommon.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace StorybrewScripts
 {
@@ -24,6 +25,8 @@ namespace StorybrewScripts
 
             // Layers
             StoryboardLayer bgLayer = GetLayer("BG Layer");
+            StoryboardLayer celestialLayer = GetLayer("Celestial Bodies Layer");
+            StoryboardLayer blankLayer = GetLayer("Blank Screen Layer");
             StoryboardLayer buildingLayer = GetLayer("Building Layer FG");
             StoryboardLayer buildingLayer1 = GetLayer("Building Layer BG1");
             StoryboardLayer buildingLayer2 = GetLayer("Building Layer BG2");
@@ -36,9 +39,9 @@ namespace StorybrewScripts
             BgBackground.Fade(884, 1);
             BgBackground.Fade(224333, 0);
 
-            StarGenerator("sb/city/star.png", bgLayer, 884, 224333, 5, 1, 1.5f);
+            StarGenerator("sb/city/star.png", celestialLayer, 884, 224333, 5, 1, 1.5f);
 
-            OsbSprite moon = bgLayer.CreateSprite("sb/city/moon.png", OsbOrigin.Centre, new Vector2(75, 115));
+            OsbSprite moon = celestialLayer.CreateSprite("sb/city/moon.png", OsbOrigin.Centre, new Vector2(75, 115));
             moon.Fade(884, 0.6);
             moon.Fade(224333, 0);
             moon.Scale(884, 854.0f / GetMapsetBitmap(moon.TexturePath).Width * 0.25);
@@ -66,6 +69,26 @@ namespace StorybrewScripts
             BuildingGenerator fgBuidling = new(this, "sb/city/city loop.png", buildingLayer, 510);
             fgBuidling.InitSprites(884);
             fgBuidling.LoopBuilding(884, (int)BeatDuration * 13, 224333);
+
+            // Blank Screens
+            BlankScreenController blank = new BlankScreenController("sb/p.png", blankLayer);
+            blank.InitializeBlankScreen(884, 3643, 1);
+            blank.ChangeScale(884, BeatDuration * 20, 0);
+
+            blank.InitializeBlankScreen(213298, 224333, 0);
+            blank.ChangeScale(213298, BeatDuration * 28, 0.5, OsbEasing.OutSine);
+            blank.ChangeScale(222953, BeatDuration * 4, 1, OsbEasing.InExpo);
+
+            // BG Flash
+            BlankFlash flash = new BlankFlash(this, GetLayer("Blank Flash Layer"), "sb/p.png", new Color4(75, 148, 219, 255));
+            flash.InitSprite(3643);
+
+            flash.FlashTrigger(884, 224333, "HitSoundNormalFinish", 8f);
+
+            // flash.Flash(3643, 8f);
+            // flash.Flash(9160, 8f);
+            // flash.Flash(14678, 8f);
+            // flash.Flash(25712, 8f);
 
         }
 
@@ -160,6 +183,86 @@ namespace StorybrewScripts
             {
                 return (sprite, sprite2);
             }
+        }
+
+        class BlankScreenController()
+        {
+            private readonly OsbSprite spriteTop;
+            private readonly OsbSprite spriteBottom;
+            public BlankScreenController(string pPath, StoryboardLayer layer) : this()
+            {
+                spriteTop = layer.CreateSprite(pPath, OsbOrigin.TopCentre, new Vector2(0, 0));
+                spriteBottom = layer.CreateSprite(pPath, OsbOrigin.BottomCentre, new Vector2(0, 480));
+            }
+
+            // blank screen thingy is supposed to be scalable with two instance of them for up and down + rotation controller too would be nice
+            public void InitializeBlankScreen(double startTime, double endTime, double initialScale = 1f)
+            {
+
+                spriteTop.Fade(startTime, endTime, 1, 1);
+                spriteBottom.Fade(startTime, endTime, 1, 1);
+                double relativeScale = initialScale * (480.0f / 4);
+
+                spriteTop.ScaleVec(startTime, 854.0f, relativeScale);
+                spriteBottom.ScaleVec(startTime, 854.0f, relativeScale);
+
+                spriteTop.Color(startTime, Color4.Black);
+                spriteBottom.Color(startTime, Color4.Black);
+            }
+
+            public void ChangeScale(int startTime, double duration, double newScale, OsbEasing easing = OsbEasing.OutExpo)
+            {
+                double relativeScale = newScale * (480.0f / 4);
+
+                spriteTop.ScaleVec(easing, startTime, startTime + duration, spriteTop.ScaleAt(startTime), 854.0f, relativeScale);
+
+                spriteBottom.ScaleVec(easing, startTime, startTime + duration, spriteBottom.ScaleAt(startTime), 854.0f, relativeScale);
+            }
+
+        }
+
+        class BlankFlash
+        {
+            private readonly StoryboardObjectGenerator ctx;
+            private readonly OsbSprite sprite;
+            private readonly Color4 color;
+
+            public BlankFlash(StoryboardObjectGenerator ctx, StoryboardLayer layer, string path, Color4 color)
+            {
+                this.ctx = ctx;
+                this.color = color;
+
+                sprite = layer.CreateSprite(path, OsbOrigin.Centre, new Vector2(320, 240));
+            }
+
+            public void InitSprite(int time)
+            {
+                sprite.ScaleVec(time, 854, 480);
+                sprite.Color(time, color);
+                sprite.Additive(time);
+            }
+
+            public void FlashTrigger(int startTime, int endTime, string trigger, float snapDuration, double opacity = 0.25)
+            {
+                int duration = (int)(snapDuration * ctx.Beatmap.TimingPoints.First().BeatDuration);
+
+                sprite.StartTriggerGroup(trigger, startTime, endTime);
+                int time = 0;
+
+                sprite.Fade(OsbEasing.In, time - ctx.Beatmap.TimingPoints.First().BeatDuration, time, 0, opacity);
+                sprite.Fade(OsbEasing.OutExpo, time, time + duration, opacity, 0);
+                sprite.EndGroup();
+            }
+
+            public void Flash(int time, float snapDuration, double opacity = 0.25)
+            {
+                int duration = (int)(snapDuration * ctx.Beatmap.TimingPoints.First().BeatDuration);
+
+                sprite.Fade(OsbEasing.In, time - ctx.Beatmap.TimingPoints.First().BeatDuration, time, 0, opacity);
+                sprite.Fade(OsbEasing.OutExpo, time, time + duration, opacity, 0);
+
+            }
+
         }
 
     }
