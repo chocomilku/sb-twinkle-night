@@ -73,7 +73,7 @@ Config:
 Layers:
   121864fa99ad4d01baadc09a942a12e3:
     Name: ""
-    OsbLayer: Overlay
+    OsbLayer: Background
     DiffSpecific: No
     Visible: Yes
   9a2ac204937543f192ab65bb3d986e9d:

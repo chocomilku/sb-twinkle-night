@@ -3,6 +3,7 @@ BeatmapId: 4826125
 BeatmapName: "Collab Easy"
 Assemblies:
 Layers:
+  - "121864fa99ad4d01baadc09a942a12e3"
   - "5228bf40d1324cd1a84c56d7c7e759b3"
   - "b1bfbab1fcab45d8b0ab4d284da27312"
   - "e882e09e01734e5ebf45097415b00aa8"
@@ -10,5 +11,4 @@ Layers:
   - "e3018f87a9074c89850e7ea30958e219"
   - "94ca706e15fe4ea88d84d6254914ad38"
   - "4bdc19b7321b40138d494e6399a367d1"
-  - "121864fa99ad4d01baadc09a942a12e3"
   - "9a2ac204937543f192ab65bb3d986e9d"
